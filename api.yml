@@ -1,0 +1,35 @@
+- config:
+    - testset: "Basic tests"
+    - timeout: 100
+
+# Basic GET articles
+- test: 
+    name: "Basic get"
+    url: "/articles"
+    curl_option_followlocation: True
+
+# Create article
+- test:
+    name: "Create article"
+    url: "http://proxy/articles"
+    method: "POST"
+    body: '{"title": "New article", "content": "Text example"}'
+    headers: {Content-Type: application/json}
+    validate:
+        - eq: [status_code, 201]  # Oczekiwany status odpowiedzi
+
+# Edit article
+- test:
+    name: "Edit article"
+    url: "http://proxy/articles/1"  # ID artykułu do edytowania
+    method: "PUT"
+    body: '{"title": "New article v2", "content": "Text article v2"}'
+    headers: {Content-Type: application/json}
+    validate:
+        - eq: [status_code, 200]  # Oczekiwany status odpowiedzi
+
+# Delete article
+- test:
+    name: "Delete article"
+    url: "http://proxy/articles/1"  
+    method: "DELETE"
